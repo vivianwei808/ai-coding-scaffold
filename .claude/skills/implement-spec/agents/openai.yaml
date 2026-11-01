@@ -1,0 +1,5 @@
+interface:
+  display_name: "Implement Spec"
+  short_description: "将 /to-spec 和 /to-tickets 的产出实现为代码。"
+policy:
+  allow_implicit_invocation: false
