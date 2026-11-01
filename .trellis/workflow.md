@@ -287,7 +287,7 @@ When a user request matches one of these intents inside an active task, route fi
 
 - Planning or unclear requirements -> `grill-with-docs`.
 - `in_progress` implementation/check -> dispatch `trellis-implement` / `trellis-check`.
-- Repeated debugging -> `trellis-break-loop`; spec updates -> `/domain-modeling` (updates CONTEXT.md + spec).
+- Repeated debugging -> `/diagnosing-bugs`; spec updates -> `/domain-modeling` (updates CONTEXT.md + spec).
 
 [/Claude Code, Cursor, OpenCode, codex-sub-agent, Kiro, Gemini, Qoder, CodeBuddy, Copilot, Droid, Pi, Oh My Pi, ZCode, Snow, Reasonix, Trae, Grok, Kimi Code]
 
@@ -295,7 +295,7 @@ When a user request matches one of these intents inside an active task, route fi
 
 - Planning or unclear requirements -> `grill-with-docs`.
 - Before editing -> `trellis-before-dev`; after editing -> `trellis-check`.
-- Repeated debugging -> `trellis-break-loop`; spec updates -> `/domain-modeling` (updates CONTEXT.md + spec).
+- Repeated debugging -> `/diagnosing-bugs`; spec updates -> `/domain-modeling` (updates CONTEXT.md + spec).
 
 [/codex-inline, Kilo, Antigravity, Devin, DeepSeek Harness]
 
@@ -581,7 +581,7 @@ Goal: ensure code quality, capture lessons, record the work.
 
 #### 3.2 Debug retrospective `[on demand]`
 
-If this task involved repeated debugging (the same issue was fixed multiple times), load the `trellis-break-loop` skill to:
+If this task involved repeated debugging (the same issue was fixed multiple times), load the `/diagnosing-bugs` skill to:
 - Classify the root cause
 - Explain why earlier fixes failed
 - Propose prevention

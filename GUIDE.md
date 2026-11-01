@@ -3,6 +3,7 @@
 > 这是一个 **AI 编码脚手架**：用 Claude Code 写代码时，它会逼着 AI 先想清楚再动手、
 > 全程 TDD、写完自动双轴评审，并且把每一步都记档——AI 再也不会"失忆"。
 > 底层 = Trellis 框架（管流程和记忆）+ Matt Pocock 的 31 个工程技能（管代码纪律）。
+> 本脚手架：https://github.com/vivianwei808/ai-coding-scaffold
 
 ## 0. 你需要准备什么
 
@@ -11,6 +12,8 @@
 | Claude Code | 终端里能跑 `claude` | 按 claude.com/code 安装 |
 | Node.js ≥ 18 | `node --version` | 官网装 LTS 版 |
 | Python 3 | `python3 --version` | macOS 自带 |
+| rsync | `rsync --version` | macOS/Linux 自带；Windows 用 WSL |
+| Trellis CLI（可选） | `trellis --version` | `npm install -g @mindfoldhq/trellis`；只有 `/trellis-session-insight`（历史检索）和 channel 多代理功能需要它，日常流程不用 |
 
 ## 1. 三分钟开新项目
 
@@ -94,7 +97,7 @@ AI 把这次学到的新知识回写到规范（domain-modeling）、提交代�
 | 情况 | 办法 |
 |---|---|
 | AI 在流程里绕不出来 | 对它说 `no-trellis`（本轮回跳过流程提示） |
-| AI 反复修同一个 bug | 说 `/trellis-break-loop` 或 `/diagnosing-bugs` |
+| AI 反复修同一个 bug | 说 `/diagnosing-bugs`（六阶段调试纪律：先建反馈循环再动手） |
 | 会话太长要换新会话 | 说 `/handoff`，新会话引用生成的文档继续 |
 | 不知道该用哪个技能 | 问 `/ask-matt` |
 | 我就是要快速改两行 | 说"这是小改动，不用建任务"，AI 会跳过流程 |

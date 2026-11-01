@@ -25,10 +25,10 @@
 │   ├── agents/                  # sub-agent 提示词源
 │   └── scripts/                 # task.py / get_context.py / add_session.py
 ├── .claude/
-│   ├── skills/                  # 38 个技能 = Matt 31 + Trellis 基建 7
+│   ├── skills/                  # 37 个技能 = Matt 31 + Trellis 基建 6
 │   │   ├── grill-with-docs/     # ── Matt 纪律层（31 个，中文）
 │   │   ├── tdd/  implement/  code-review/  triage/  wayfinder/  ...
-│   │   ├── trellis-before-dev/  # ── Trellis 基建（7 个，保留）
+│   │   ├── trellis-before-dev/  # ── Trellis 基建（6 个，保留）
 │   │   ├── trellis-check/  trellis-session-insight/  ...
 │   ├── agents/                  # trellis-implement / trellis-check / trellis-research
 │   │                            #   （已注入 TDD 纪律 + 双轴评审）
@@ -36,7 +36,9 @@
 │   └── hooks/                   # session-start / workflow-state 注入（框架核心）
 ├── DESIGN.md                    # 本文档
 ├── GUIDE.md                     # 使用指南（新手向）
-└── scripts/new-project.sh       # 从本模板新建项目
+└── scripts/
+    ├── new-project.sh           # 从本模板新建项目
+    └── apply-matt-rewire.py     # trellis update 后重新应用 Matt 改挂（幂等）
 ```
 
 ## 3. 替换映射表（Trellis 原生 → Matt Pocock）
@@ -45,17 +47,18 @@
 |---|---|---|
 | `trellis-brainstorm` | **`/grill-with-docs`** | 拷问契约相同（relentless interview、一次一问），Matt 版额外产出 CONTEXT.md 共享语言 + ADR |
 | `trellis-update-spec` | **`/domain-modeling`** | 规范回写：挑战术语、边界压测、更新 CONTEXT.md 与 spec |
+| `trellis-break-loop` | **`/diagnosing-bugs`** | 反复调试同一问题：六阶段调试纪律循环（反馈循环 → 复现最小化 → 可证伪假设 → 仪器 → 回归测试 → 复盘） |
 | implement 环节（文档约定） | **`trellis-implement` agent + `/tdd` 纪律注入** | 保留 Trellis 的约束（禁 git、读 jsonl），注入 Matt 的红绿循环与三反模式 |
 | check 环节 | **`trellis-check` agent + `/code-review` 双轴** | 保留 lint/typecheck/test，注入 Standards+Fowler / Spec 双轴评审 |
 | （无对应） | `/triage` `/handoff` `/research` 等 | Matt 增益能力，按需使用 |
 
-**保留的 Trellis 基建**（Matt 没有对应物，删了会断流程）：
+**保留的 Trellis 基建**（Matt 无对应物，或只覆盖其一部分）：
 
 - `task.py` 状态机（planning → in_progress → archived）与 `tasks/` 目录
 - `spec/` 分层规范 + `implement.jsonl` / `check.jsonl` 精确注入
 - `workspace/` journal 自动记录（对应 Matt 的 `/handoff`，一个是自动一个是手动，双保险）
 - 三个 hooks（session-start、workflow-state 面包屑、sub-agent 上下文注入）
-- `trellis-before-dev` / `trellis-break-loop` / `trellis-session-insight` / `trellis-meta` / `trellis-channel` / `trellis-spec-bootstrap` 六个基建技能
+- 六个基建技能：`trellis-before-dev`（inline 平台 spec 加载）、`trellis-check`（lint/typecheck/test 执行器，Matt 的 /code-review 只覆盖其评审维度）、`trellis-session-insight`（历史会话检索，方向与 /handoff 相反）、`trellis-meta`（框架自身管理）、`trellis-channel`（多代理运行时）、`trellis-spec-bootstrap`（代码库 → spec 引导，/to-spec 是对话 → 规格，方向不同）
 
 ## 4. 一次典型任务的数据流
 
@@ -79,7 +82,7 @@ trellis-check agent：lint/typecheck/test + 双轴评审（Standards/Spec 分离
 1. **面包屑是融合点**：workflow.md 的 `[workflow-state:*]` 块每轮注入提示词，Matt 技能通过这里被"强制"进入流程——这解决了 Matt 原版"流程靠人记住"的最大短板。
 2. **技能用中文译版**（forge-ai mattpocock-skills-zh v1.3.1）：新手可读性优先；要回上游英文版，把 `.claude/skills/` 下同名目录换成官方内容即可。
 3. **不删 trellis-research agent**：它与 Matt 的 `/research` 并存——前者是约束化子代理（读 jsonl），后者是轻量后台调研；场景不同。
-4. **upstream 升级**：`npx @mindfoldhq/trellis update` 会重刷模板文件；workflow.md 的 Matt 改挂可能被覆盖，升级后重跑 `scripts/apply-matt-rewire.sh`（见下）恢复。
+4. **upstream 升级**：`npx @mindfoldhq/trellis update` 会重刷模板文件（workflow.md、hooks、agents）；Matt 改挂与 TDD/双轴注入可能被覆盖，升级后在新项目目录里重跑 `python3 scripts/apply-matt-rewire.py` 一键恢复（幂等，覆盖 workflow + hooks + commands + agents 五类文件）。
 
 ## 6. 已知边界
 
